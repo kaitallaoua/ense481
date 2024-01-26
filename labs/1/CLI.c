@@ -2,10 +2,50 @@
 
 #include "usart.h"
 void print_time(uint16_t time) {
-			char* temp = convertIntegerToChar(time);
-			CLI_transmit("\n\ntime: ", strlen("\n\ntime: "));
-			CLI_transmit(temp, strlen(temp));
-			free(temp);
+			CLI_transmit(add_32_int, strlen(add_32_int));
+			char* add_32_int_str = convertIntegerToChar(time);
+			CLI_transmit(add_32_int_str, strlen(add_32_int_str));
+			free(add_32_int_str);
+	
+			CLI_transmit(add_64_int, strlen(add_64_int));
+			char* add_64_int_str = convertIntegerToChar(time);
+			CLI_transmit(add_64_int_str, strlen(add_64_int_str));
+			free(add_64_int_str);
+	
+			CLI_transmit(mul_32_int, strlen(mul_32_int));
+			char* mul_32_int_str = convertIntegerToChar(time);
+			CLI_transmit(mul_32_int_str, strlen(mul_32_int_str));
+			free(mul_32_int_str);
+	
+			CLI_transmit(mul_64_int, strlen(mul_64_int));
+			char* mul_64_int_str = convertIntegerToChar(time);
+			CLI_transmit(mul_64_int_str, strlen(mul_64_int_str));
+			free(mul_64_int_str);
+	
+			CLI_transmit(div_32_int, strlen(div_32_int));
+			char* div_32_int_str = convertIntegerToChar(time);
+			CLI_transmit(div_32_int_str, strlen(div_32_int_str));
+			free(div_32_int_str);
+	
+			CLI_transmit(div_64_int, strlen(div_64_int));
+			char* div_64_int_str = convertIntegerToChar(time);
+			CLI_transmit(div_64_int_str, strlen(div_64_int_str));
+			free(div_64_int_str);
+			
+			CLI_transmit(cpy_8_byte_struct, strlen(cpy_8_byte_struct));
+			char* cpy_8_byte_struct_str = convertIntegerToChar(time);
+			CLI_transmit(cpy_8_byte_struct_str, strlen(cpy_8_byte_struct_str));
+			free(cpy_8_byte_struct_str);
+	
+			CLI_transmit(cpy_128_byte_struct, strlen(cpy_128_byte_struct));
+			char* cpy_128_byte_struct_str = convertIntegerToChar(time);
+			CLI_transmit(cpy_128_byte_struct_str, strlen(cpy_128_byte_struct_str));
+			free(cpy_128_byte_struct_str);
+			
+			CLI_transmit(cpy_1024_byte_struct, strlen(cpy_1024_byte_struct));
+			char* cpy_1024_byte_struct_str = convertIntegerToChar(time);
+			CLI_transmit(cpy_1024_byte_struct_str, strlen(cpy_1024_byte_struct_str));
+			free(cpy_1024_byte_struct_str);
 	
 }
 

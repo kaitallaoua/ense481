@@ -3,6 +3,22 @@
 // stmlink virtual com port
 
 void print_time(uint16_t time);
+static char add_32_int[] = "\r\nAdd two 32bit int: ";
+static char add_64_int[] = "\r\nAdd two 64bit int: ";
+
+static char mul_32_int[] = "\r\nMul two 32bit int: ";
+static char mul_64_int[] = "\r\nMul two 64bit int: ";
+
+static char div_32_int[] = "\r\nDiv two 32bit int: ";
+static char div_64_int[] = "\r\nDiv two 64bit int: ";
+
+static char cpy_8_byte_struct[] = "\r\nCpy 8 byte struct: ";
+static char cpy_128_byte_struct[] = "\r\nCpy 128 byte struct: ";
+static char cpy_1024_byte_struct[] = "\r\nCpy 1024 byte struct: ";
+
+
+
+
 
 char* convertIntegerToChar(int N);
 static char prompt[] = "\r\nSTM32 CLI (time/help): ";
