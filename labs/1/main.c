@@ -13,11 +13,13 @@
 #include "stdlib.h"
 #include "string.h"
 #include "usart.h"
+#include "timer.h"
 
 int main() {
     turn_on_clocks();
     configure_io();
     serial_open();
+		timer_init();
 
     extern char input_buff[INPUT_BUFF_LEN];
 
@@ -29,17 +31,10 @@ int main() {
         CLI_receive();
 
         if (input_buff[0] != '\r') {
-            if (strcmp(input_buff, led_on_cmd) == 0) {
-                control_green_onboard_led(1);
-                CLI_transmit(success, strlen(success));
-
-            }
-
-            else if (strcmp(input_buff, led_off_cmd) == 0) {
-                control_green_onboard_led(0);
-                CLI_transmit(success, strlen(success));
-
-            } else if (strcmp(input_buff, help_cmd) == 0) {
+            if (strcmp(input_buff, time_cmd) == 0) {
+							print_time(timer_start());
+							
+						} else if (strcmp(input_buff, help_cmd) == 0) {
                 CLI_transmit(help, strlen(help));
 
             } else {

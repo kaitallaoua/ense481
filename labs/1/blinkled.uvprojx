@@ -488,6 +488,26 @@
               <FileType>5</FileType>
               <FilePath>.\CLI.h</FilePath>
             </File>
+            <File>
+              <FileName>timer_impl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\timer_impl.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>measurement.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\measurement.c</FilePath>
+            </File>
+            <File>
+              <FileName>measurement.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\measurement.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

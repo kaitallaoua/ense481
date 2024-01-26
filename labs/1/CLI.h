@@ -2,21 +2,20 @@
 #include "stdlib.h"
 // stmlink virtual com port
 
-static char prompt[] = "\r\nSTM32 CLI (led_on/led_off/help): ";
+void print_time(uint16_t time);
+
+char* convertIntegerToChar(int N);
+static char prompt[] = "\r\nSTM32 CLI (time/help): ";
 
 static char invalid_cmd[] = "\r\nInvalid command: ";
 
 static char help[] =
     "\r\nSupported Commands:"
-    "\r\n    led_on: turn led on"
-    "\r\n    led_off: turn led off"
+    "\r\n    time: preform timer measurements"
     "\r\n    help: display this help command";
 
-static char led_on_cmd[] = "led_on\r";
-static char led_off_cmd[] = "led_off\r";
 static char help_cmd[] = "help\r";
-static char led_state_on[] = "\r\nLed is: on ";
-static char led_state_off[] = "\r\nLed is: off";
+static char time_cmd[] = "time\r";
 
 static char success[] = "\r\nSuccess";
 
