@@ -1,6 +1,6 @@
 #include "timer.h"
 
-
+#include "math.h"
 
 void timer_init(void) {
     TIM3->PSC = 1; // smallest for fastest counting, divide by 1
@@ -19,6 +19,21 @@ uint16_t timer_start(void) {
 	
 }
 
-uint16_t timer_stop(uint16_t start_time);
+uint16_t timer_stop(uint16_t start_time) {
+	int32_t time_taken = start_time - TIM3->CNT;
+	if (time_taken < 0) {
+		return (uint16_t) (time_taken * -1);
+	} 
+	else {
+		return (uint16_t) time_taken;
+	}
+	
+}
 
-void timer_shutdown(void);
+void timer_shutdown(void) {
+	TIM3->CR1 = 0;
+	TIM3->ARR = 0;
+	TIM3->EGR = 0;
+}
+
+

@@ -14,13 +14,14 @@
 #include "string.h"
 #include "usart.h"
 #include "timer.h"
+#include "measurement.h"
 
 int main() {
     turn_on_clocks();
     configure_io();
     serial_open();
 		timer_init();
-
+	
     extern char input_buff[INPUT_BUFF_LEN];
 
     refresh_screen(1);
@@ -32,8 +33,7 @@ int main() {
 
         if (input_buff[0] != '\r') {
             if (strcmp(input_buff, time_cmd) == 0) {
-							print_time(timer_start());
-							
+							print_time();
 						} else if (strcmp(input_buff, help_cmd) == 0) {
                 CLI_transmit(help, strlen(help));
 
@@ -58,4 +58,5 @@ int main() {
         // need to reable usart interrupt again to be receivering data
         USART2->CR1 |= USART_CR1_RXNEIE;
     }
+		
 }

@@ -2,8 +2,10 @@
 #include "stdlib.h"
 // stmlink virtual com port
 
-void print_time(uint16_t time);
+void print_time(void);
+
 static char add_32_int[] = "\r\nAdd two 32bit int: ";
+
 static char add_64_int[] = "\r\nAdd two 64bit int: ";
 
 static char mul_32_int[] = "\r\nMul two 32bit int: ";
