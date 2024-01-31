@@ -2,12 +2,17 @@
 #include "timer.h"
 
 uint16_t raw_add_32_int(volatile int32_t a, volatile int32_t b) {
+				//GPIOC->BSRR = GPIO_BSRR_BS12;
+
 			uint16_t start = timer_start();
 	
 			// store result is not needed, but cant find a way otherwise with O3 optimization
 			volatile int32_t c = a + b;
-	
-			return timer_stop(start);
+				uint16_t stop =  timer_stop(start);
+				//	GPIOC->BSRR = GPIO_BSRR_BR12;
+				return stop;
+
+
 	
 }
 
@@ -22,22 +27,30 @@ uint16_t raw_add_64_int(volatile int64_t a, volatile int64_t b) {
 }
 
 uint16_t raw_mul_32_int(volatile int32_t a, volatile int32_t b) {
+//	GPIOC->BSRR = GPIO_BSRR_BS12;
 			uint16_t start = timer_start();
-	
+			
 			// store result is not needed, but cant find a way otherwise with O3 optimization
 			volatile int32_t c = a * b;
 	
-			return timer_stop(start);
-	
+				uint16_t stop = timer_stop(start);
+		//			GPIOC->BSRR = GPIO_BSRR_BR12;
+
+			return stop;
 }
 
 uint16_t raw_mul_64_int(volatile int64_t a, volatile int64_t b) {
+					//GPIOC->BSRR = GPIO_BSRR_BS12;
+
 			uint16_t start = timer_start();
 	
 			// store result is not needed, but cant find a way otherwise with O3 optimization
 			volatile int64_t c = a * b;
+				uint16_t stop = timer_stop(start);
 	
-			return timer_stop(start);
+			return stop;
+				//GPIOC->BSRR = GPIO_BSRR_BR12;
+
 	
 }
 
@@ -76,6 +89,8 @@ uint16_t raw_cpy_8_byte_struct(void) {
 }
 
 uint16_t raw_cpy_128_byte_struct(void) {
+					GPIOC->BSRR = GPIO_BSRR_BS12;
+
 	volatile struct bytes_128 src = {};
 	for (int i = 0; i < 32; i++) {
 		src.data[i] = get_pseudo_rand_uint32();
@@ -83,6 +98,8 @@ uint16_t raw_cpy_128_byte_struct(void) {
 	
 			uint16_t start = timer_start();
 	volatile struct bytes_128 dst = src;
+						GPIOC->BSRR = GPIO_BSRR_BR12;
+
 		return timer_stop(start);
 	
 }

@@ -2,7 +2,7 @@
 
 #include "usart.h"
 void turn_on_clocks(void) {
-    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_AFIOEN;
+    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_AFIOEN;
     RCC->APB1ENR |= RCC_APB1ENR_USART2EN | RCC_APB1ENR_TIM2EN | RCC_APB1ENR_TIM3EN;
 }
 
@@ -16,6 +16,10 @@ void configure_io(void) {
 	DWT->CYCCNT = 0;
 	DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 	
+	
+	// PC12 / IN2  relay / red light
+			GPIOC->CRH |= GPIO_CRH_MODE12_0 | GPIO_CRH_MODE12_1;
+			GPIOC->CRH&= ~GPIO_CRH_CNF12_0 & ~GPIO_CRH_CNF12_1;
 }
 
 void control_green_onboard_led(unsigned int on_or_off) {
