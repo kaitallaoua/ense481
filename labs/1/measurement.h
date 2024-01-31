@@ -11,25 +11,20 @@ uint16_t raw_div_32_int(int32_t a, int32_t b);
 uint16_t raw_div_64_int(volatile int64_t a, volatile int64_t b);
 
 uint16_t raw_cpy_8_byte_struct(void);
-uint16_t raw_cpy_128_byte_struct(void) ;
-uint16_t raw_cpy_1024_byte_struct(void) ;
-
+uint16_t raw_cpy_128_byte_struct(void);
+uint16_t raw_cpy_1024_byte_struct(void);
 
 struct bytes_8 {
-		uint32_t data[2]; // 4 * 2 = 8 bytes
-
+    uint32_t data[2];  // 4 * 2 = 8 bytes
 };
 
 struct bytes_128 {
-		uint32_t data[32]; // 4 * 32 = 128 bytes
-
+    uint32_t data[32];  // 4 * 32 = 128 bytes
 };
 
 struct bytes_1024 {
-		uint32_t data[256]; // 4 * 256 = 1024 bytes
-
+    uint32_t data[256];  // 4 * 256 = 1024 bytes
 };
-
 
 uint8_t get_pseudo_rand_uint8(void);
 uint32_t get_pseudo_rand_uint32(void);

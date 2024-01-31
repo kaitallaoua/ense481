@@ -18,10 +18,6 @@ static char cpy_8_byte_struct[] = "\r\nCpy 8 byte struct: ";
 static char cpy_128_byte_struct[] = "\r\nCpy 128 byte struct: ";
 static char cpy_1024_byte_struct[] = "\r\nCpy 1024 byte struct: ";
 
-
-
-
-
 char* convertIntegerToChar(int N);
 static char prompt[] = "\r\nSTM32 CLI (time/help): ";
 

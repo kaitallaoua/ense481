@@ -9,19 +9,19 @@
 
 #include "CLI.h"
 #include "io_control.h"
+#include "measurement.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
-#include "usart.h"
 #include "timer.h"
-#include "measurement.h"
+#include "usart.h"
 
 int main() {
     turn_on_clocks();
     configure_io();
     serial_open();
-		timer_init();
-	
+    timer_init();
+
     extern char input_buff[INPUT_BUFF_LEN];
 
     refresh_screen(1);
@@ -33,8 +33,8 @@ int main() {
 
         if (input_buff[0] != '\r') {
             if (strcmp(input_buff, time_cmd) == 0) {
-							print_time();
-						} else if (strcmp(input_buff, help_cmd) == 0) {
+                print_time();
+            } else if (strcmp(input_buff, help_cmd) == 0) {
                 CLI_transmit(help, strlen(help));
 
             } else {
@@ -58,5 +58,4 @@ int main() {
         // need to reable usart interrupt again to be receivering data
         USART2->CR1 |= USART_CR1_RXNEIE;
     }
-		
 }
