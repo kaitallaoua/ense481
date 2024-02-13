@@ -22,6 +22,8 @@ int main() {
     serial_open();
     timer_init();
 
+		
+	
     extern char input_buff[INPUT_BUFF_LEN];
 
     refresh_screen(1);

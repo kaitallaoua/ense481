@@ -4,19 +4,12 @@
 
 void print_time(void);
 
-static char add_32_int[] = "\r\nAdd two 32bit int: ";
+static char timing_str[] = "\r\nTiming-------------------------";
+static char std_sin[] = "\r\nstd sin time: ";
+static char taylor_sin[] = "\r\ntaylor sin time: ";
 
-static char add_64_int[] = "\r\nAdd two 64bit int: ";
+static char acc_str[] = "\r\nAccuracy-------------------------";
 
-static char mul_32_int[] = "\r\nMul two 32bit int: ";
-static char mul_64_int[] = "\r\nMul two 64bit int: ";
-
-static char div_32_int[] = "\r\nDiv two 32bit int: ";
-static char div_64_int[] = "\r\nDiv two 64bit int: ";
-
-static char cpy_8_byte_struct[] = "\r\nCpy 8 byte struct: ";
-static char cpy_128_byte_struct[] = "\r\nCpy 128 byte struct: ";
-static char cpy_1024_byte_struct[] = "\r\nCpy 1024 byte struct: ";
 
 char* convertIntegerToChar(int N);
 static char prompt[] = "\r\nSTM32 CLI (time/help): ";
@@ -25,7 +18,7 @@ static char invalid_cmd[] = "\r\nInvalid command: ";
 
 static char help[] =
     "\r\nSupported Commands:"
-    "\r\n    time: preform timer measurements"
+    "\r\n    time: preform timer + accuracy measurements"
     "\r\n    help: display this help command";
 
 static char help_cmd[] = "help\r";

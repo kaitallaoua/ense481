@@ -2,56 +2,35 @@
 
 #include "measurement.h"
 #include "usart.h"
-
+#include "math.h"
+#include "trig.h"
 void print_time(void) {
-    CLI_transmit(add_32_int, strlen(add_32_int));
-    char* add_32_int_str = convertIntegerToChar(test_add_32_int());
-    CLI_transmit(add_32_int_str, strlen(add_32_int_str));
-    free(add_32_int_str);
+	uint16_t taylor_time = taylor_series_timing();
+	uint16_t std_sin_time = std_sin_timing();
+	
+	CLI_transmit(timing_str, strlen(timing_str));
+	
+	CLI_transmit(std_sin, strlen(std_sin));
+	char* std_sin_char = convertIntegerToChar(std_sin_time);
+	CLI_transmit(std_sin_char, strlen(std_sin_char));
+	
+	CLI_transmit(taylor_sin, strlen(taylor_sin));
+	char* taylor_sin_char = convertIntegerToChar(std_sin_time);
+	CLI_transmit(taylor_sin_char, strlen(taylor_sin_char));
+	
+	CLI_transmit(acc_str, strlen(acc_str));
+	
+	
+	
+	//double r = sin(2.0);
+	//char* std_sin_val = convertIntegerToChar((int) r);
+	//CLI_transmit(std_sin_val, strlen(std_sin_val));
+		//CLI_transmit(acc_str, strlen(acc_str));
 
-    CLI_transmit(add_64_int, strlen(add_64_int));
-    char* add_64_int_str = convertIntegerToChar(test_add_64_int());
-    CLI_transmit(add_64_int_str, strlen(add_64_int_str));
-    free(add_64_int_str);
-
-    CLI_transmit(mul_32_int, strlen(mul_32_int));
-    char* mul_32_int_str = convertIntegerToChar(test_mul_32_int());
-    CLI_transmit(mul_32_int_str, strlen(mul_32_int_str));
-    free(mul_32_int_str);
-
-    CLI_transmit(mul_64_int, strlen(mul_64_int));
-    char* mul_64_int_str = convertIntegerToChar(test_mul_64_int());
-    CLI_transmit(mul_64_int_str, strlen(mul_64_int_str));
-    free(mul_64_int_str);
-
-    CLI_transmit(div_32_int, strlen(div_32_int));
-    char* div_32_int_str = convertIntegerToChar(test_div_32_int());
-    CLI_transmit(div_32_int_str, strlen(div_32_int_str));
-    free(div_32_int_str);
-
-    CLI_transmit(div_64_int, strlen(div_64_int));
-    char* div_64_int_str = convertIntegerToChar(test_div_64_int());
-    CLI_transmit(div_64_int_str, strlen(div_64_int_str));
-    free(div_64_int_str);
-
-    CLI_transmit(cpy_8_byte_struct, strlen(cpy_8_byte_struct));
-    char* cpy_8_byte_struct_str =
-        convertIntegerToChar(test_cpy_8_byte_struct());
-    CLI_transmit(cpy_8_byte_struct_str, strlen(cpy_8_byte_struct_str));
-    free(cpy_8_byte_struct_str);
-
-    CLI_transmit(cpy_128_byte_struct, strlen(cpy_128_byte_struct));
-    char* cpy_128_byte_struct_str =
-        convertIntegerToChar(test_cpy_128_byte_struct());
-    CLI_transmit(cpy_128_byte_struct_str, strlen(cpy_128_byte_struct_str));
-    free(cpy_128_byte_struct_str);
-
-    // bus fault, locks up here
-    CLI_transmit(cpy_1024_byte_struct, strlen(cpy_1024_byte_struct));
-    char* cpy_1024_byte_struct_str =
-        convertIntegerToChar(test_cpy_1024_byte_struct());
-    CLI_transmit(cpy_1024_byte_struct_str, strlen(cpy_1024_byte_struct_str));
-    free(cpy_1024_byte_struct_str);
+//	char* taylor_sin_val = convertIntegerToChar(taylor_series_sin(2));
+	//CLI_transmit(taylor_sin_val, strlen(taylor_sin_val));
+	
+	
 }
 
 // size is number of chars/bytes
