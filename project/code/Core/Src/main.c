@@ -71,10 +71,64 @@ PUTCHAR_PROTOTYPE
   HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
   return ch;
 }
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+char UART1_rxBuffer[3] = {0};
+const uint32_t CLI_timeout_ms = 100*1000;
+
+void test_max(void) {
+
+
+}
+
+void test_typ(void) {
+
+
+}
+
+void test_min(void) {
+
+
+}
+
+void test_pwr(void) {
+
+
+}
+// CLI commands
+// max, typ, min, pwr
+void read_cli(void) {
+
+
+	// need to type the command in the timeout
+	while(HAL_UART_Receive (&huart1, (uint8_t*) UART1_rxBuffer, 3, CLI_timeout_ms) != HAL_OK);
+	printf("Your command: %s\r\n", UART1_rxBuffer);
+
+	if (strcmp(UART1_rxBuffer, "max") == 0) {
+		test_max();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "typ") == 0) {
+		test_typ();
+	}
+
+	if (strcmp(UART1_rxBuffer, "min") == 0) {
+		test_min();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "pwr") == 0) {
+		test_pwr();
+
+	}
+
+}
+
 
 /**
   * @brief Select ADC1 channel function
@@ -304,9 +358,9 @@ int main(void)
   uint16_t shunt_resistor_uW;
 
   // display firmware version+build info
-  printf("REV A, March 20th, 2024");
-  HAL_Delay(5000);
+  printf("REV A, March 20th, 2024\r\n\r\n");
 
+  	read_cli();
 
 
   /* USER CODE END 2 */
