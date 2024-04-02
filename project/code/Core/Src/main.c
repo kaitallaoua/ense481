@@ -77,58 +77,20 @@ PUTCHAR_PROTOTYPE
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+uint16_t source_V_q;
+uint16_t mcu_V_q;
+uint16_t shunt_resistor_V_q;
+uint16_t shunt_resistor_mV;
+uint16_t mcu_mV;
+
+uint16_t circuit_mA;
+
+uint16_t mcu_mW;
+uint16_t shunt_resistor_uW;
+
 char UART1_rxBuffer[3] = {0};
 const uint32_t CLI_timeout_ms = 100*1000;
-
-void test_max(void) {
-
-
-}
-
-void test_typ(void) {
-
-
-}
-
-void test_min(void) {
-
-
-}
-
-void test_pwr(void) {
-
-
-}
-// CLI commands
-// max, typ, min, pwr
-void read_cli(void) {
-
-
-	// need to type the command in the timeout
-	while(HAL_UART_Receive (&huart1, (uint8_t*) UART1_rxBuffer, 3, CLI_timeout_ms) != HAL_OK);
-	printf("Your command: %s\r\n", UART1_rxBuffer);
-
-	if (strcmp(UART1_rxBuffer, "max") == 0) {
-		test_max();
-
-	}
-
-	if (strcmp(UART1_rxBuffer, "typ") == 0) {
-		test_typ();
-	}
-
-	if (strcmp(UART1_rxBuffer, "min") == 0) {
-		test_min();
-
-	}
-
-	if (strcmp(UART1_rxBuffer, "pwr") == 0) {
-		test_pwr();
-
-	}
-
-}
-
 
 /**
   * @brief Select ADC1 channel function
@@ -304,6 +266,148 @@ void select_adc_channel(int channel)
             break;
     }
 }
+
+void print_pwr(void) {
+
+	  printf("-------------------------------\r\n");
+	  for (uint16_t i = 0; i < 2; i++) {
+
+
+
+			  select_adc_channel(i);
+			  // Get each ADC value from the group (2 channels in this case)
+			  HAL_ADC_Start(&hadc1);
+			  // Wait for regular group conversion to be completed
+			  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+
+			  if (i == 0) {
+				  source_V_q = HAL_ADC_GetValue(&hadc1);
+				  printf("Quantized Source Voltage [%u] value: %u [unitless]\r\n", (uint16_t) i, (uint16_t) source_V_q);
+			  } else if (i == 1) {
+				  mcu_V_q = HAL_ADC_GetValue(&hadc1);
+				  printf("Quantized MCU Voltage [%u] value: %u [unitless]\r\n", (uint16_t) i, (uint16_t) mcu_V_q);
+			  }
+		  }
+
+		  shunt_resistor_V_q = source_V_q - mcu_V_q;
+		  shunt_resistor_mV = (uint16_t) (((float) (shunt_resistor_V_q * 1000)) / 4095.0) * 3.3;
+		  mcu_mV = (uint16_t) (((float) (mcu_V_q * 1000)) / 4095.0) * 3.3;
+
+
+		  printf("shunt resistor voltage: %u [mV]\r\n", shunt_resistor_mV);
+		  printf("mcu voltage: %u [mV]\r\n", mcu_mV);
+
+		  // since 1 ohm (assumed constant) shunt resistor
+		  // I = V / R
+		  // I = V
+		  circuit_mA = shunt_resistor_mV;
+		  printf("Circuit current: %u [mA]\r\n", circuit_mA);
+
+		  mcu_mW = circuit_mA * (mcu_mV / 1000);
+
+		  shunt_resistor_uW = circuit_mA * (shunt_resistor_mV);
+
+		  printf("shunt resistor power: %u [uW]\r\n", shunt_resistor_uW);
+		  printf("mcu power: %u [mW]\r\n", mcu_mW);
+
+
+
+}
+
+void print_help(void) {
+	printf("Help: \r\n    max : power consumption test enabling all clocks and peripherals\r\n");
+	printf("    typ : power consumption test for this program: USART1, ADC1, TIM3\r\n");
+	printf("    min : power consumption test all peripherals disabled, only CPU enabled CANNOT GATHER INFO IN THIS MODE\r\n");
+	printf("    pwr : free-running print of power readings\r\n");
+}
+
+void print_version(void) {
+	printf("Version: REV B April 1th, 2024\r\n");
+}
+
+void test_max(void) {
+
+
+}
+
+void test_typ(void) {
+
+
+}
+
+void test_min(void) {
+
+
+}
+
+void test_pwr(void) {
+	printf("Entering free-running power mode, press `q` three times quickly to exit\r\n");
+	while (1) {
+
+		print_pwr();
+		HAL_UART_Receive (&huart1, (uint8_t*) UART1_rxBuffer, 3, 2000);
+
+		if (strcmp(UART1_rxBuffer, "qqq") == 0) {
+			printf("Exiting `pwr` mode\r\n");
+			return;
+
+		}
+	}
+
+
+}
+
+// CLI commands
+// max, typ, min, pwr
+void read_cli(void) {
+	for (uint8_t i = 0; i < 3; i++) {
+		UART1_rxBuffer[0] = 0;
+	}
+	// need to type the command in the timeout
+	while(HAL_UART_Receive (&huart1, (uint8_t*) UART1_rxBuffer, 3, CLI_timeout_ms) != HAL_OK);
+	printf("Your command: %s\r\n", UART1_rxBuffer);
+
+	if (strcmp(UART1_rxBuffer, "max") == 0) {
+		test_max();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "typ") == 0) {
+		test_typ();
+	}
+
+	if (strcmp(UART1_rxBuffer, "min") == 0) {
+		test_min();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "pwr") == 0) {
+		test_pwr();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "ver") == 0) {
+		print_version();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "hel") == 0) {
+		print_help();
+
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
 /* USER CODE END 0 */
 
 /**
@@ -346,75 +450,27 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-  uint16_t source_V_q;
-  uint16_t mcu_V_q;
-  uint16_t shunt_resistor_V_q;
-  uint16_t shunt_resistor_mV;
-  uint16_t mcu_mV;
 
-  uint16_t circuit_mA;
-
-  uint16_t mcu_mW;
-  uint16_t shunt_resistor_uW;
 
   // display firmware version+build info
-  printf("REV A, March 20th, 2024\r\n\r\n");
+  printf("REV B April 1th, 2024\r\n\r\n");
+  printf("Power Consumption CLI\r\n");
 
-  	read_cli();
 
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+
+  // should not get here
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  printf("-------------------------------\r\n");
-	  for (uint16_t i = 0; i < 2; i++) {
-
-
-
-			  select_adc_channel(i);
-			  // Get each ADC value from the group (2 channels in this case)
-			  HAL_ADC_Start(&hadc1);
-			  // Wait for regular group conversion to be completed
-			  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-
-			  if (i == 0) {
-				  source_V_q = HAL_ADC_GetValue(&hadc1);
-				  printf("Quantized Source Voltage [%u] value: %u [unitless]\r\n", (uint16_t) i, (uint16_t) source_V_q);
-			  } else if (i == 1) {
-				  mcu_V_q = HAL_ADC_GetValue(&hadc1);
-				  printf("Quantized MCU Voltage [%u] value: %u [unitless]\r\n", (uint16_t) i, (uint16_t) mcu_V_q);
-			  }
-		  }
-
-	  	  shunt_resistor_V_q = source_V_q - mcu_V_q;
-	  	  shunt_resistor_mV = (uint16_t) (((float) (shunt_resistor_V_q * 1000)) / 4095.0) * 3.3;
-	  	  mcu_mV = (uint16_t) (((float) (mcu_V_q * 1000)) / 4095.0) * 3.3;
-
-
-		  printf("shunt resistor voltage: %u [mV]\r\n", shunt_resistor_mV);
-		  printf("mcu voltage: %u [mV]\r\n", mcu_mV);
-
-		  // since 1 ohm (assumed constant) shunt resistor
-		  // I = V / R
-		  // I = V
-		  circuit_mA = shunt_resistor_mV;
-		  printf("Circuit current: %u [mA]\r\n", circuit_mA);
-
-		  mcu_mW = circuit_mA * (mcu_mV / 1000);
-
-		  shunt_resistor_uW = circuit_mA * (shunt_resistor_mV);
-
-		  printf("shunt resistor power: %u [uW]\r\n", shunt_resistor_uW);
-		  printf("mcu power: %u [mW]\r\n", mcu_mW);
-	  	  HAL_Delay(1000);
-
+	  read_cli();
 
   }
   /* USER CODE END 3 */
