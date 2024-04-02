@@ -315,10 +315,14 @@ void print_pwr(void) {
 }
 
 void print_help(void) {
-	printf("Help: \r\n    max : power consumption test enabling all clocks and peripherals\r\n");
+	printf("Help: \r\n");
+	printf("    max : power consumption test enabling all clocks and peripherals\r\n");
 	printf("    typ : power consumption test for this program: USART1, ADC1, TIM3\r\n");
 	printf("    min : power consumption test all peripherals disabled, only CPU enabled CANNOT GATHER INFO IN THIS MODE\r\n");
 	printf("    pwr : free-running print of power readings\r\n");
+	printf("    ver : print version info\r\n");
+	printf("    hel : this message\r\n");
+
 }
 
 void print_version(void) {
