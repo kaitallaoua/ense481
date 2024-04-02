@@ -117,6 +117,10 @@ const uint32_t CLI_timeout_ms = 100*1000;
 const uint32_t delay_in_test_for_ms = 10*1000;
 const uint32_t time_per_periph_ms = 5* 1000;
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  HAL_ResumeTick();
+}
 
 /**
   * @brief Select ADC1 channel function
@@ -348,6 +352,9 @@ void print_help(void) {
 	printf("    pwr : free-running print of power readings\r\n");
 	printf("    ver : print version info\r\n");
 	printf("    hel : this message\r\n");
+	printf("    sle : enter sleep mode\r\n");
+	printf("    sto : enter stop mode\r\n");
+	printf("    sta : enter standby mode\r\n");
 
 }
 
@@ -480,6 +487,61 @@ void test_pwr(void) {
 
 }
 
+
+// sleep mode implementation details from:
+// https://controllerstech.com/low-power-modes-in-stm32/
+void test_sleep(void) {
+	printf("Entering sleep mode, press blue user button to awake. \r\n\r\n");
+
+	// since the HAL uses TIM4 interrupt for its timebase, disable so we dont wake
+	HAL_SuspendTick();
+
+	// enter sleep
+	HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+
+	// Any interrupt from NVIC will awake MCU, we use EXTI on blue button
+	// After servicing that ISR, which re-enabled the HAL tick, we resume here where we left off
+
+	printf("Awoke from sleep\r\n");
+
+}
+
+void test_stop(void) {
+	printf("Entering stop mode, press blue user button to awake. \r\n\r\n");
+
+	// since the HAL uses TIM4 interrupt for its timebase, disable so we dont wake
+	HAL_SuspendTick();
+
+	// enter stop
+	HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+	// Any interrupt from NVIC will awake MCU, we use EXTI on blue button
+	// After servicing that ISR, which re-enabled the HAL tick, we resume here where we left off
+
+	// Must reconfigure system clocks as they were disabled
+	SystemClock_Config();
+
+	printf("Awoke from sleep\r\n");
+
+}
+
+void test_standby(void) {
+	printf("Entering standby mode, WKUP pin rising edge, RTC alarm, tamper event, NRST, or IWDG used to reset MCU. \r\n\r\n");
+
+	// since the HAL uses TIM4 interrupt for its timebase, disable so we dont wake
+	HAL_SuspendTick();
+
+	/* Clear the WU FLAG */
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+
+	 // consider RTC or wakeup pin config if desired
+
+	// enter standby
+	// there is no recovery, think of standby as `shutdown` on a computer. The `wakeup` is a cpu reset
+	HAL_PWR_EnterSTANDBYMode();
+
+
+
+}
 // CLI commands
 // max, typ, min, pwr
 void read_cli(void) {
@@ -516,6 +578,21 @@ void read_cli(void) {
 
 	if (strcmp(UART1_rxBuffer, "hel") == 0) {
 		print_help();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "sle") == 0) {
+		test_sleep();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "sto") == 0) {
+		test_stop();
+
+	}
+
+	if (strcmp(UART1_rxBuffer, "sta") == 0) {
+		test_standby();
 
 	}
 
