@@ -214,7 +214,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-*.pdf
 **/handouts
 **/DebugConfig
 **/Listings
@@ -223,7 +222,4 @@ cython_debug/
 **/*.kaita
 .vscode
 *.zip
-!labs/1/ense481_timing.pdf
-!project/Project Plan.pdf
-!project/Testing Plan.pdf
 .metadata
