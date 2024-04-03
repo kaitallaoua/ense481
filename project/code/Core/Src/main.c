@@ -115,7 +115,7 @@ uint16_t shunt_resistor_uW;
 char UART1_rxBuffer[3] = {0};
 const uint32_t CLI_timeout_ms = 100*1000;
 const uint32_t delay_in_test_for_ms = 10*1000;
-const uint32_t time_per_periph_ms = 5* 1000;
+const uint32_t time_per_periph_ms = 1* 1000;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
@@ -348,7 +348,7 @@ void print_help(void) {
 	printf("Help: \r\n");
 	printf("    max : power consumption test enabling all clocks and peripherals\r\n");
 	printf("    typ : power consumption test for this program: USART1, ADC1, TIM3\r\n");
-	printf("    min : power consumption test all peripherals disabled (except TIM4), only CPU enabled CANNOT GATHER INFO IN THIS MODE\r\n");
+	printf("    min : power consumption test all peripherals disabled (except TIM4), \r\n	only CPU enabled CANNOT GATHER INFO IN THIS MODE\r\n");
 	printf("    pwr : free-running print of power readings\r\n");
 	printf("    ver : print version info\r\n");
 	printf("    hel : this message\r\n");

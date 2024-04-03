@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00006954  08000110  08000110  00010110  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000730  08006a64  08006a64  00016a64  2**2
+  2 .rodata       00000734  08006a64  08006a64  00016a64  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08007194  08007194  00020068  2**0
+  3 .ARM.extab    00000000  08007198  08007198  00020068  2**0
                   CONTENTS
-  4 .ARM          00000000  08007194  08007194  00020068  2**0
+  4 .ARM          00000000  08007198  08007198  00020068  2**0
                   CONTENTS
-  5 .preinit_array 00000000  08007194  08007194  00020068  2**0
+  5 .preinit_array 00000000  08007198  08007198  00020068  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08007194  08007194  00017194  2**2
+  6 .init_array   00000004  08007198  08007198  00017198  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  08007198  08007198  00017198  2**2
+  7 .fini_array   00000004  0800719c  0800719c  0001719c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000068  20000000  0800719c  00020000  2**2
+  8 .data         00000068  20000000  080071a0  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          0000055c  20000068  08007204  00020068  2**2
+  9 .bss          0000055c  20000068  08007208  00020068  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  200005c4  08007204  000205c4  2**0
+ 10 ._user_heap_stack 00000604  200005c4  08007208  000205c4  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00020068  2**0
                   CONTENTS, READONLY
@@ -963,7 +963,7 @@ PUTCHAR_PROTOTYPE
 08000b80 <HAL_GPIO_EXTI_Callback>:
 const uint32_t CLI_timeout_ms = 100*1000;
 const uint32_t delay_in_test_for_ms = 10*1000;
-const uint32_t time_per_periph_ms = 5* 1000;
+const uint32_t time_per_periph_ms = 1* 1000;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
@@ -1721,7 +1721,7 @@ void print_help(void) {
 	printf("    typ : power consumption test for this program: USART1, ADC1, TIM3\r\n");
  8001088:	480e      	ldr	r0, [pc, #56]	; (80010c4 <print_help+0x4c>)
  800108a:	f004 fe6f 	bl	8005d6c <puts>
-	printf("    min : power consumption test all peripherals disabled (except TIM4), only CPU enabled CANNOT GATHER INFO IN THIS MODE\r\n");
+	printf("    min : power consumption test all peripherals disabled (except TIM4), \r\n	only CPU enabled CANNOT GATHER INFO IN THIS MODE\r\n");
  800108e:	480e      	ldr	r0, [pc, #56]	; (80010c8 <print_help+0x50>)
  8001090:	f004 fe6c 	bl	8005d6c <puts>
 	printf("    pwr : free-running print of power readings\r\n");
@@ -1750,12 +1750,12 @@ void print_help(void) {
  80010c0:	08006b8c 	.word	0x08006b8c
  80010c4:	08006bd4 	.word	0x08006bd4
  80010c8:	08006c1c 	.word	0x08006c1c
- 80010cc:	08006c98 	.word	0x08006c98
- 80010d0:	08006cc8 	.word	0x08006cc8
- 80010d4:	08006ce8 	.word	0x08006ce8
- 80010d8:	08006d00 	.word	0x08006d00
- 80010dc:	08006d1c 	.word	0x08006d1c
- 80010e0:	08006d38 	.word	0x08006d38
+ 80010cc:	08006c9c 	.word	0x08006c9c
+ 80010d0:	08006ccc 	.word	0x08006ccc
+ 80010d4:	08006cec 	.word	0x08006cec
+ 80010d8:	08006d04 	.word	0x08006d04
+ 80010dc:	08006d20 	.word	0x08006d20
+ 80010e0:	08006d3c 	.word	0x08006d3c
 
 080010e4 <print_version>:
 
@@ -1769,7 +1769,7 @@ void print_version(void) {
  80010ee:	bf00      	nop
  80010f0:	bd80      	pop	{r7, pc}
  80010f2:	bf00      	nop
- 80010f4:	08006d58 	.word	0x08006d58
+ 80010f4:	08006d5c 	.word	0x08006d5c
 
 080010f8 <test_max>:
 
@@ -1778,7 +1778,7 @@ void test_max(void) {
  80010f8:	b580      	push	{r7, lr}
  80010fa:	af00      	add	r7, sp, #0
 	printf("Entering typical test mode, ensure external power meter connected. Each periph will delay for %lu ms\r\n", time_per_periph_ms);
- 80010fc:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80010fc:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8001100:	4619      	mov	r1, r3
  8001102:	485e      	ldr	r0, [pc, #376]	; (800127c <test_max+0x184>)
  8001104:	f004 fdcc 	bl	8005ca0 <iprintf>
@@ -1789,7 +1789,7 @@ void test_max(void) {
  800110c:	485c      	ldr	r0, [pc, #368]	; (8001280 <test_max+0x188>)
  800110e:	f004 fe2d 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001112:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001112:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8001116:	4618      	mov	r0, r3
  8001118:	f001 fc42 	bl	80029a0 <HAL_Delay>
 
@@ -1799,7 +1799,7 @@ void test_max(void) {
  8001120:	4858      	ldr	r0, [pc, #352]	; (8001284 <test_max+0x18c>)
  8001122:	f004 fe23 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001126:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001126:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800112a:	4618      	mov	r0, r3
  800112c:	f001 fc38 	bl	80029a0 <HAL_Delay>
 
@@ -1809,7 +1809,7 @@ void test_max(void) {
  8001134:	4854      	ldr	r0, [pc, #336]	; (8001288 <test_max+0x190>)
  8001136:	f004 fe19 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 800113a:	f241 3388 	movw	r3, #5000	; 0x1388
+ 800113a:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800113e:	4618      	mov	r0, r3
  8001140:	f001 fc2e 	bl	80029a0 <HAL_Delay>
 
@@ -1819,7 +1819,7 @@ void test_max(void) {
  8001148:	4850      	ldr	r0, [pc, #320]	; (800128c <test_max+0x194>)
  800114a:	f004 fe0f 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 800114e:	f241 3388 	movw	r3, #5000	; 0x1388
+ 800114e:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8001152:	4618      	mov	r0, r3
  8001154:	f001 fc24 	bl	80029a0 <HAL_Delay>
 
@@ -1829,7 +1829,7 @@ void test_max(void) {
  800115c:	484c      	ldr	r0, [pc, #304]	; (8001290 <test_max+0x198>)
  800115e:	f004 fe05 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001162:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001162:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8001166:	4618      	mov	r0, r3
  8001168:	f001 fc1a 	bl	80029a0 <HAL_Delay>
 
@@ -1839,7 +1839,7 @@ void test_max(void) {
  8001170:	4848      	ldr	r0, [pc, #288]	; (8001294 <test_max+0x19c>)
  8001172:	f004 fdfb 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001176:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001176:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800117a:	4618      	mov	r0, r3
  800117c:	f001 fc10 	bl	80029a0 <HAL_Delay>
 
@@ -1849,7 +1849,7 @@ void test_max(void) {
  8001184:	4844      	ldr	r0, [pc, #272]	; (8001298 <test_max+0x1a0>)
  8001186:	f004 fdf1 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 800118a:	f241 3388 	movw	r3, #5000	; 0x1388
+ 800118a:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800118e:	4618      	mov	r0, r3
  8001190:	f001 fc06 	bl	80029a0 <HAL_Delay>
 
@@ -1859,7 +1859,7 @@ void test_max(void) {
  8001198:	4840      	ldr	r0, [pc, #256]	; (800129c <test_max+0x1a4>)
  800119a:	f004 fde7 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 800119e:	f241 3388 	movw	r3, #5000	; 0x1388
+ 800119e:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80011a2:	4618      	mov	r0, r3
  80011a4:	f001 fbfc 	bl	80029a0 <HAL_Delay>
 
@@ -1869,7 +1869,7 @@ void test_max(void) {
  80011ac:	483c      	ldr	r0, [pc, #240]	; (80012a0 <test_max+0x1a8>)
  80011ae:	f004 fddd 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 80011b2:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80011b2:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80011b6:	4618      	mov	r0, r3
  80011b8:	f001 fbf2 	bl	80029a0 <HAL_Delay>
 
@@ -1879,7 +1879,7 @@ void test_max(void) {
  80011c0:	4838      	ldr	r0, [pc, #224]	; (80012a4 <test_max+0x1ac>)
  80011c2:	f004 fdd3 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 80011c6:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80011c6:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80011ca:	4618      	mov	r0, r3
  80011cc:	f001 fbe8 	bl	80029a0 <HAL_Delay>
 
@@ -1889,7 +1889,7 @@ void test_max(void) {
  80011d4:	4834      	ldr	r0, [pc, #208]	; (80012a8 <test_max+0x1b0>)
  80011d6:	f004 fdc9 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 80011da:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80011da:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80011de:	4618      	mov	r0, r3
  80011e0:	f001 fbde 	bl	80029a0 <HAL_Delay>
 
@@ -1899,7 +1899,7 @@ void test_max(void) {
  80011e8:	4830      	ldr	r0, [pc, #192]	; (80012ac <test_max+0x1b4>)
  80011ea:	f004 fdbf 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 80011ee:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80011ee:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80011f2:	4618      	mov	r0, r3
  80011f4:	f001 fbd4 	bl	80029a0 <HAL_Delay>
 
@@ -1909,7 +1909,7 @@ void test_max(void) {
  80011fc:	482c      	ldr	r0, [pc, #176]	; (80012b0 <test_max+0x1b8>)
  80011fe:	f004 fdb5 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001202:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001202:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8001206:	4618      	mov	r0, r3
  8001208:	f001 fbca 	bl	80029a0 <HAL_Delay>
 
@@ -1919,7 +1919,7 @@ void test_max(void) {
  8001210:	4828      	ldr	r0, [pc, #160]	; (80012b4 <test_max+0x1bc>)
  8001212:	f004 fdab 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001216:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001216:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800121a:	4618      	mov	r0, r3
  800121c:	f001 fbc0 	bl	80029a0 <HAL_Delay>
 
@@ -1928,7 +1928,7 @@ void test_max(void) {
  8001220:	4825      	ldr	r0, [pc, #148]	; (80012b8 <test_max+0x1c0>)
  8001222:	f004 fda3 	bl	8005d6c <puts>
 	HAL_Delay(time_per_periph_ms);
- 8001226:	f241 3388 	movw	r3, #5000	; 0x1388
+ 8001226:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800122a:	4618      	mov	r0, r3
  800122c:	f001 fbb8 	bl	80029a0 <HAL_Delay>
 
@@ -1972,22 +1972,22 @@ void test_max(void) {
 }
  8001278:	bf00      	nop
  800127a:	bd80      	pop	{r7, pc}
- 800127c:	08006d78 	.word	0x08006d78
- 8001280:	08006de0 	.word	0x08006de0
- 8001284:	08006dec 	.word	0x08006dec
- 8001288:	08006dfc 	.word	0x08006dfc
- 800128c:	08006e08 	.word	0x08006e08
- 8001290:	08006e14 	.word	0x08006e14
- 8001294:	08006e24 	.word	0x08006e24
- 8001298:	08006e30 	.word	0x08006e30
- 800129c:	08006e3c 	.word	0x08006e3c
- 80012a0:	08006e48 	.word	0x08006e48
- 80012a4:	08006e54 	.word	0x08006e54
- 80012a8:	08006e60 	.word	0x08006e60
- 80012ac:	08006e6c 	.word	0x08006e6c
- 80012b0:	08006e78 	.word	0x08006e78
- 80012b4:	08006e88 	.word	0x08006e88
- 80012b8:	08006e98 	.word	0x08006e98
+ 800127c:	08006d7c 	.word	0x08006d7c
+ 8001280:	08006de4 	.word	0x08006de4
+ 8001284:	08006df0 	.word	0x08006df0
+ 8001288:	08006e00 	.word	0x08006e00
+ 800128c:	08006e0c 	.word	0x08006e0c
+ 8001290:	08006e18 	.word	0x08006e18
+ 8001294:	08006e28 	.word	0x08006e28
+ 8001298:	08006e34 	.word	0x08006e34
+ 800129c:	08006e40 	.word	0x08006e40
+ 80012a0:	08006e4c 	.word	0x08006e4c
+ 80012a4:	08006e58 	.word	0x08006e58
+ 80012a8:	08006e64 	.word	0x08006e64
+ 80012ac:	08006e70 	.word	0x08006e70
+ 80012b0:	08006e7c 	.word	0x08006e7c
+ 80012b4:	08006e8c 	.word	0x08006e8c
+ 80012b8:	08006e9c 	.word	0x08006e9c
  80012bc:	200000b4 	.word	0x200000b4
  80012c0:	200000e4 	.word	0x200000e4
  80012c4:	2000010c 	.word	0x2000010c
@@ -1999,7 +1999,7 @@ void test_max(void) {
  80012dc:	200002f4 	.word	0x200002f4
  80012e0:	20000384 	.word	0x20000384
  80012e4:	200003cc 	.word	0x200003cc
- 80012e8:	08006eb4 	.word	0x08006eb4
+ 80012e8:	08006eb8 	.word	0x08006eb8
 
 080012ec <test_typ>:
 
@@ -2008,12 +2008,12 @@ void test_typ(void) {
  80012ec:	b580      	push	{r7, lr}
  80012ee:	af00      	add	r7, sp, #0
 	printf("Entering typical test mode, ensure external power meter connected. Each periph will delay for %lu ms\r\n", time_per_periph_ms);
- 80012f0:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80012f0:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80012f4:	4619      	mov	r1, r3
  80012f6:	4806      	ldr	r0, [pc, #24]	; (8001310 <test_typ+0x24>)
  80012f8:	f004 fcd2 	bl	8005ca0 <iprintf>
 	HAL_Delay(time_per_periph_ms);
- 80012fc:	f241 3388 	movw	r3, #5000	; 0x1388
+ 80012fc:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  8001300:	4618      	mov	r0, r3
  8001302:	f001 fb4d 	bl	80029a0 <HAL_Delay>
 
@@ -2024,8 +2024,8 @@ void test_typ(void) {
 }
  800130c:	bf00      	nop
  800130e:	bd80      	pop	{r7, pc}
- 8001310:	08006d78 	.word	0x08006d78
- 8001314:	08006ec4 	.word	0x08006ec4
+ 8001310:	08006d7c 	.word	0x08006d7c
+ 8001314:	08006ec8 	.word	0x08006ec8
 
 08001318 <test_min>:
 
@@ -2074,10 +2074,10 @@ void test_min(void) {
  8001362:	bf00      	nop
  8001364:	bd80      	pop	{r7, pc}
  8001366:	bf00      	nop
- 8001368:	08006ed8 	.word	0x08006ed8
+ 8001368:	08006edc 	.word	0x08006edc
  800136c:	2000033c 	.word	0x2000033c
  8001370:	20000084 	.word	0x20000084
- 8001374:	08006f3c 	.word	0x08006f3c
+ 8001374:	08006f40 	.word	0x08006f40
 
 08001378 <test_pwr>:
 
@@ -2117,11 +2117,11 @@ void test_pwr(void) {
 
 }
  80013aa:	bd80      	pop	{r7, pc}
- 80013ac:	08006f50 	.word	0x08006f50
+ 80013ac:	08006f54 	.word	0x08006f54
  80013b0:	20000424 	.word	0x20000424
  80013b4:	2000033c 	.word	0x2000033c
- 80013b8:	08006f9c 	.word	0x08006f9c
- 80013bc:	08006fa0 	.word	0x08006fa0
+ 80013b8:	08006fa0 	.word	0x08006fa0
+ 80013bc:	08006fa4 	.word	0x08006fa4
 
 080013c0 <test_sleep>:
 
@@ -2155,8 +2155,8 @@ void test_sleep(void) {
 }
  80013dc:	bf00      	nop
  80013de:	bd80      	pop	{r7, pc}
- 80013e0:	08006fb4 	.word	0x08006fb4
- 80013e4:	08006ff0 	.word	0x08006ff0
+ 80013e0:	08006fb8 	.word	0x08006fb8
+ 80013e4:	08006ff4 	.word	0x08006ff4
 
 080013e8 <test_stop>:
 
@@ -2190,8 +2190,8 @@ void test_stop(void) {
 }
  8001408:	bf00      	nop
  800140a:	bd80      	pop	{r7, pc}
- 800140c:	08007004 	.word	0x08007004
- 8001410:	08006ff0 	.word	0x08006ff0
+ 800140c:	08007008 	.word	0x08007008
+ 8001410:	08006ff4 	.word	0x08006ff4
 
 08001414 <test_standby>:
 
@@ -2227,7 +2227,7 @@ void test_standby(void) {
  8001432:	bf00      	nop
  8001434:	bd80      	pop	{r7, pc}
  8001436:	bf00      	nop
- 8001438:	08007040 	.word	0x08007040
+ 8001438:	08007044 	.word	0x08007044
  800143c:	40007000 	.word	0x40007000
 
 08001440 <read_cli>:
@@ -2384,16 +2384,16 @@ void read_cli(void) {
  8001524:	20000424 	.word	0x20000424
  8001528:	000186a0 	.word	0x000186a0
  800152c:	2000033c 	.word	0x2000033c
- 8001530:	080070ac 	.word	0x080070ac
- 8001534:	080070c0 	.word	0x080070c0
- 8001538:	080070c4 	.word	0x080070c4
- 800153c:	080070c8 	.word	0x080070c8
- 8001540:	080070cc 	.word	0x080070cc
- 8001544:	080070d0 	.word	0x080070d0
- 8001548:	080070d4 	.word	0x080070d4
- 800154c:	080070d8 	.word	0x080070d8
- 8001550:	080070dc 	.word	0x080070dc
- 8001554:	080070e0 	.word	0x080070e0
+ 8001530:	080070b0 	.word	0x080070b0
+ 8001534:	080070c4 	.word	0x080070c4
+ 8001538:	080070c8 	.word	0x080070c8
+ 800153c:	080070cc 	.word	0x080070cc
+ 8001540:	080070d0 	.word	0x080070d0
+ 8001544:	080070d4 	.word	0x080070d4
+ 8001548:	080070d8 	.word	0x080070d8
+ 800154c:	080070dc 	.word	0x080070dc
+ 8001550:	080070e0 	.word	0x080070e0
+ 8001554:	080070e4 	.word	0x080070e4
 
 08001558 <main>:
 /**
@@ -2519,8 +2519,8 @@ int main(void)
  8001610:	200002f4 	.word	0x200002f4
  8001614:	20000384 	.word	0x20000384
  8001618:	200003cc 	.word	0x200003cc
- 800161c:	080070e4 	.word	0x080070e4
- 8001620:	08007100 	.word	0x08007100
+ 800161c:	080070e8 	.word	0x080070e8
+ 8001620:	08007104 	.word	0x08007104
 
 08001624 <SystemClock_Config>:
 /**
@@ -3933,7 +3933,7 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8001d7a:	f000 fe11 	bl	80029a0 <HAL_Delay>
 	  printf("Bricked");
  8001d7e:	e7f7      	b.n	8001d70 <Error_Handler+0x8>
- 8001d80:	08007118 	.word	0x08007118
+ 8001d80:	0800711c 	.word	0x0800711c
 
 08001d84 <HAL_MspInit>:
 /* USER CODE END 0 */
@@ -6071,7 +6071,7 @@ LoopFillZerobss:
   ldr r1, =_edata
  8002928:	20000068 	.word	0x20000068
   ldr r2, =_sidata
- 800292c:	0800719c 	.word	0x0800719c
+ 800292c:	080071a0 	.word	0x080071a0
   ldr r2, =_sbss
  8002930:	20000068 	.word	0x20000068
   ldr r4, =_ebss
@@ -11536,7 +11536,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  8004786:	bf00      	nop
  8004788:	40022000 	.word	0x40022000
  800478c:	40021000 	.word	0x40021000
- 8004790:	08007120 	.word	0x08007120
+ 8004790:	08007124 	.word	0x08007124
  8004794:	20000000 	.word	0x20000000
  8004798:	20000004 	.word	0x20000004
 
@@ -11671,8 +11671,8 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  800482e:	bf00      	nop
  8004830:	40021000 	.word	0x40021000
  8004834:	007a1200 	.word	0x007a1200
- 8004838:	08007138 	.word	0x08007138
- 800483c:	08007148 	.word	0x08007148
+ 8004838:	0800713c 	.word	0x0800713c
+ 800483c:	0800714c 	.word	0x0800714c
  8004840:	003d0900 	.word	0x003d0900
 
 08004844 <HAL_RCC_GetHCLKFreq>:
@@ -11718,7 +11718,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8004874:	4618      	mov	r0, r3
  8004876:	bd80      	pop	{r7, pc}
  8004878:	40021000 	.word	0x40021000
- 800487c:	08007130 	.word	0x08007130
+ 800487c:	08007134 	.word	0x08007134
 
 08004880 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -11744,7 +11744,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  800489c:	4618      	mov	r0, r3
  800489e:	bd80      	pop	{r7, pc}
  80048a0:	40021000 	.word	0x40021000
- 80048a4:	08007130 	.word	0x08007130
+ 80048a4:	08007134 	.word	0x08007134
 
 080048a8 <HAL_RCC_GetClockConfig>:
   * contains the current clock configuration.
@@ -12328,8 +12328,8 @@ uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk)
  8004c00:	bd80      	pop	{r7, pc}
  8004c02:	bf00      	nop
  8004c04:	40021000 	.word	0x40021000
- 8004c08:	0800714c 	.word	0x0800714c
- 8004c0c:	0800715c 	.word	0x0800715c
+ 8004c08:	08007150 	.word	0x08007150
+ 8004c0c:	08007160 	.word	0x08007160
  8004c10:	007a1200 	.word	0x007a1200
  8004c14:	003d0900 	.word	0x003d0900
  8004c18:	aaaaaaab 	.word	0xaaaaaaab
@@ -15752,10 +15752,10 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  8006006:	4798      	blx	r3
  8006008:	3601      	adds	r6, #1
  800600a:	e7f2      	b.n	8005ff2 <__libc_init_array+0x1e>
- 800600c:	08007194 	.word	0x08007194
- 8006010:	08007194 	.word	0x08007194
- 8006014:	08007194 	.word	0x08007194
- 8006018:	08007198 	.word	0x08007198
+ 800600c:	08007198 	.word	0x08007198
+ 8006010:	08007198 	.word	0x08007198
+ 8006014:	08007198 	.word	0x08007198
+ 8006018:	0800719c 	.word	0x0800719c
 
 0800601c <__retarget_lock_acquire_recursive>:
  800601c:	4770      	bx	lr
@@ -16249,9 +16249,9 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  8006470:	a904      	add	r1, sp, #16
  8006472:	f000 f87d 	bl	8006570 <_printf_i>
  8006476:	e7e4      	b.n	8006442 <_vfiprintf_r+0x1ea>
- 8006478:	0800715e 	.word	0x0800715e
- 800647c:	08007164 	.word	0x08007164
- 8006480:	08007168 	.word	0x08007168
+ 8006478:	08007162 	.word	0x08007162
+ 800647c:	08007168 	.word	0x08007168
+ 8006480:	0800716c 	.word	0x0800716c
  8006484:	00000000 	.word	0x00000000
  8006488:	08006233 	.word	0x08006233
 
@@ -16587,8 +16587,8 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  80067a4:	2500      	movs	r5, #0
  80067a6:	f104 0619 	add.w	r6, r4, #25
  80067aa:	e7f5      	b.n	8006798 <_printf_i+0x228>
- 80067ac:	0800716f 	.word	0x0800716f
- 80067b0:	08007180 	.word	0x08007180
+ 80067ac:	08007173 	.word	0x08007173
+ 80067b0:	08007184 	.word	0x08007184
 
 080067b4 <__sflush_r>:
  80067b4:	898a      	ldrh	r2, [r1, #12]
